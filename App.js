@@ -6,16 +6,28 @@ import ExpoTHREE, { THREE } from 'expo-three';
 export default function App() {
 
   let scene, camera, renderer;
-  let cube;
+  const InitialCameraZ = 25;
 
-  const buildCubeForScene = (scene) => {
-    let geometry = new THREE.BoxGeometry(1, 1, 1);
-    let material = new THREE.MeshBasicMaterial({color: 0x0000FC});
+  const buildMazeForScene = (scene) => {
+    for (let i = 0; i < 10; i++) {
+      let wallLeft = createWallForScene(scene);
+      wallLeft.position.x = -2;
+      wallLeft.position.z = 20 - 4*i;
 
-    let cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+      let wallRight = createWallForScene(scene);
+      wallRight.position.x = 8;
+      wallRight.position.z = 20 - 4*i;
+    }
+  }
 
-    return cube;
+  const createWallForScene = (scene) => {
+    const geometry = new THREE.BoxGeometry(2, 16, 4);
+    const material = new THREE.MeshBasicMaterial({color: 0x559641});
+
+    const wall = new THREE.Mesh(geometry, material);
+    scene.add(wall);
+
+    return wall;
   }
 
   const onContextCreate = async ({
@@ -28,13 +40,15 @@ export default function App() {
     renderer.setClearColor(0x000000)
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    camera.position.z = 5;
+    camera.position.x = 3;
+    camera.position.z = InitialCameraZ;
     
-    cube = buildCubeForScene(scene);
+    buildMazeForScene(scene);
   };
 
   const onRender = delta => { 
-    cube.rotation.y += delta * 0.5;
+    camera.position.z -= delta * 3.5;
+    if (camera.position.z <= 0) camera.position.z = InitialCameraZ;
     renderer.render(scene, camera);
   };
 
