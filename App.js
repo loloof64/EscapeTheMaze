@@ -1,16 +1,14 @@
 import React from 'react';
 import { Dimensions, View } from 'react-native';
 
-import { GLView } from 'expo';
-import Expo2DContext from 'expo-2d-context';
 import { View as GraphicsView } from 'expo-graphics';
 import ExpoTHREE, { THREE } from 'expo-three';
 import { ProcessingView } from 'expo-processing';
 
 export default function App() {
 
-  let scene, camera, renderer, gl, scale;
-  const InitialCameraZ = 25;
+  let scene, camera, renderer, gl, scale, twoDZoneProgressionRate;
+  const InitialCameraZ = 20;
 
   const width = Dimensions.get('window').width;
   const height = Dimensions.get('window').height;
@@ -63,6 +61,7 @@ export default function App() {
 
   const onRender = delta => { 
     camera.position.z -= delta * 3.5;
+    twoDZoneProgressionRate = 20 - camera.position.z;
     if (camera.position.z <= 0) camera.position.z = InitialCameraZ;
     renderer.render(scene, camera);
   };
@@ -72,13 +71,22 @@ export default function App() {
   }
 
   const sketch2D = (p) => {
+    const unit = width * 0.04;
+
     p.setup = () => {
       p.size(width, height * 0.5);
-      p.background(152);
+      p.strokeWeight(unit);
     }
 
     p.draw = () => {
+      p.background(152);
 
+      p.stroke(0);
+      p.line(3*unit, 3*unit, 23*unit, 3*unit);
+      p.line(3*unit, 7*unit, 23*unit, 7*unit);
+
+      p.stroke(255, 12, 20);
+      p.point(3*unit + twoDZoneProgressionRate*unit, 5*unit);
     }
   }
 
