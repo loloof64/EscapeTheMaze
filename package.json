@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "expo": "~37.0.3",
-    "expo-gl": "~8.1.0",
+    "expo-gl": "^8.1.0",
+    "expo-graphics": "^1.1.0",
     "expo-three": "^5.4.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
@@ -18,8 +19,8 @@
     "three": "^0.116.1"
   },
   "devDependencies": {
-    "babel-preset-expo": "~8.1.0",
-    "@babel/core": "^7.8.6"
+    "@babel/core": "^7.8.6",
+    "babel-preset-expo": "~8.1.0"
   },
   "private": true
 }
