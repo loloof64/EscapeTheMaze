@@ -153,9 +153,7 @@ export default function App() {
 
     const drawMapIfNecessary = () => {
       if (map && !mapDrawn)
-      {
-        p.background(mapBackground);
-        
+      {  
         p.stroke(0);
         for (let j = 0; j < mapDimension; j++)
         {
@@ -191,6 +189,7 @@ export default function App() {
     }
 
     p.draw = () => {
+      p.background(mapBackground);
       drawMapIfNecessary();
       drawNewPlayerPosition();
       erasePreviousPlayerPosition();
