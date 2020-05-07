@@ -96,11 +96,7 @@ export default function App() {
     buildMazeForScene(scene);
   };
 
-  const onRender = delta => { 
-    prevPlayerX = playerX;
-    prevPlayerY = playerY;
-
-    playerX = camera.position.z * -1;
+  const onRender = () => { 
     renderer.render(scene, camera);
   };
 
