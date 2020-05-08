@@ -164,8 +164,10 @@ export default function App() {
     const unit = width * 0.04;
 
     const drawMapIfNecessary = () => {
-      if (map)
+      if (map && !mapDrawn)
       {  
+        p.background(mapBackground);
+        
         p.stroke(0);
         for (let j = 0; j < mapDimension; j++)
         {
@@ -201,7 +203,6 @@ export default function App() {
     }
 
     p.draw = () => {
-      p.background(mapBackground);
       drawMapIfNecessary();
       drawNewPlayerPosition();
       erasePreviousPlayerPosition();
