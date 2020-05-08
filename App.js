@@ -10,7 +10,7 @@ export default function App() {
   const mapDimension = 16;
   const wallThickness = 4;
   const wallLength = 4;
-  let scene, camera, renderer, gl, scale, twoDZoneProgressionRate;
+  let scene, camera, renderer, gl, scale;
   let map, mapDrawn;
   const mapBackground = 152;
   let playerX, playerY, prevPlayerX, prevPlayerY;
@@ -105,6 +105,7 @@ export default function App() {
   }
 
   const goUp = () => {
+    if (!map) return;
     if (playerY === 0) return;
     const nextCellValue = map[playerY-1][playerX];
     const nextCellIsAWall = nextCellValue === 0;
@@ -116,6 +117,7 @@ export default function App() {
   }
 
   const goDown = () => {
+    if (!map) return;
     if (playerY === mapDimension - 1) return;
     const nextCellValue = map[playerY+1][playerX];
     const nextCellIsAWall = nextCellValue === 0;
@@ -127,6 +129,7 @@ export default function App() {
   }
 
   const goLeft = () => {
+    if (!map) return;
     if (playerX === 0) return;
     const nextCellValue = map[playerY][playerX-1];
     const nextCellIsAWall = nextCellValue === 0;
@@ -138,6 +141,7 @@ export default function App() {
   }
 
   const goRight = () => {
+    if (!map) return;
     if (playerX === mapDimension - 1) return;
     const nextCellValue = map[playerY][playerX+1];
     const nextCellIsAWall = nextCellValue === 0;
