@@ -164,7 +164,7 @@ export default function App() {
     const unit = width * 0.04;
 
     const drawMapIfNecessary = () => {
-      if (map && !mapDrawn)
+      if (map)
       {  
         p.stroke(0);
         for (let j = 0; j < mapDimension; j++)
