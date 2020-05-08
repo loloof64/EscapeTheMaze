@@ -11,7 +11,7 @@ export default function App() {
   const wallThickness = 4;
   const wallLength = 4;
   let scene, camera, renderer, gl, scale;
-  let map, mapDrawn = true;
+  let map, mapDirty;
   let playerX, playerY;
   const InitialCameraX = wallThickness; // we must initially place on row 1
   const InitialCameraZ = 0;
@@ -44,7 +44,7 @@ export default function App() {
     playerY = 1;
     buildMapEmptyArray();
     createFreeZonesForMap();
-    mapDrawn = false;
+    mapDirty = true;
   }
 
   const buildMaze = () => {
@@ -97,7 +97,6 @@ export default function App() {
     if (map) {
       camera.position.x = playerY * wallThickness;
       camera.position.z = -playerX * wallThickness;
-      mapDrawn = false;
     }
     else {
       buildMap();
@@ -127,7 +126,7 @@ export default function App() {
     playerY--;
     camera.position.x -= wallThickness;
 
-    mapDrawn = false;
+    mapDirty = true;
   }
 
   const goDown = () => {
@@ -140,7 +139,7 @@ export default function App() {
     playerY++;
     camera.position.x += wallThickness;
 
-    mapDrawn = false;
+    mapDirty = true;
   }
 
   const goLeft = () => {
@@ -153,7 +152,7 @@ export default function App() {
     playerX -= 1;
     camera.position.z += wallThickness;
 
-    mapDrawn = false;
+    mapDirty = true;
   }
 
   const goRight = () => {
@@ -166,7 +165,7 @@ export default function App() {
     playerX+=1;
     camera.position.z -= wallThickness;
 
-    mapDrawn = false;
+    mapDirty = true;
   }
 
   const sketch2D = (p) => {
@@ -177,10 +176,8 @@ export default function App() {
       p.point(unit*(3+playerX), unit*(3+playerY));
     }
 
-    const drawMapIfNecessary = () => {
-      if (map && !mapDrawn)
-      {  
-
+    const drawMap = () => {
+      if (map) {
         p.stroke(0);
         for (let j = 0; j < mapDimension; j++)
         {
@@ -197,8 +194,6 @@ export default function App() {
         }
 
         drawPlayerPosition();
-
-        mapDrawn = true;
       }
     }
 
@@ -208,8 +203,11 @@ export default function App() {
     }
 
     p.draw = () => {
-      p.background(194, 135, 63);
-      drawMapIfNecessary();
+      if (mapDirty) {
+        p.background(194, 135, 63);
+        drawMap();
+        mapDirty = false;
+      }
     }
   }
 
