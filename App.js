@@ -12,7 +12,6 @@ export default function App() {
   const wallLength = 4;
   let scene, camera, renderer, gl, scale;
   let map, mapDrawn = true;
-  const mapBackground = 152;
   let playerX, playerY;
   const InitialCameraX = wallThickness; // we must initially place on row 1
   const InitialCameraZ = 0;
@@ -158,6 +157,7 @@ export default function App() {
   }
 
   const goRight = () => {
+    if (!map) return;
     if (playerX === mapDimension - 1) return;
     const nextCellValue = map[playerY][playerX+1];
     const nextCellIsAWall = nextCellValue === 0;
@@ -180,7 +180,6 @@ export default function App() {
     const drawMapIfNecessary = () => {
       if (map && !mapDrawn)
       {  
-        p.background(mapBackground);
 
         p.stroke(0);
         for (let j = 0; j < mapDimension; j++)
@@ -209,6 +208,7 @@ export default function App() {
     }
 
     p.draw = () => {
+      p.background(194, 135, 63);
       drawMapIfNecessary();
     }
   }
