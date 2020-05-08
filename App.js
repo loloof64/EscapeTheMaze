@@ -1,4 +1,4 @@
-import React from 'react';
+import React   from 'react';
 import { Dimensions, View, Image, TouchableHighlight } from 'react-native';
 
 import { View as GraphicsView } from 'expo-graphics';
@@ -13,7 +13,7 @@ export default function App() {
   let scene, camera, renderer, gl, scale;
   let map, mapDrawn = true;
   const mapBackground = 152;
-  let playerX, playerY, prevPlayerX, prevPlayerY;
+  let playerX, playerY;
   const InitialCameraX = wallThickness; // we must initially place on row 1
   const InitialCameraZ = 0;
 
@@ -41,8 +41,6 @@ export default function App() {
       for (let i = 0; i < mapDimension; i++) map[1][i] = 1;
     }
 
-    prevPlayerX = 0;
-    prevPlayerY = 1;
     playerX = 0;
     playerY = 1;
     buildMapEmptyArray();
@@ -120,9 +118,10 @@ export default function App() {
     const nextCellIsAWall = nextCellValue === 0;
 
     if (nextCellIsAWall) return;
-    prevPlayerY = playerY;
     playerY--;
     camera.position.x -= wallThickness;
+
+    mapDrawn = false;
   }
 
   const goDown = () => {
@@ -132,9 +131,10 @@ export default function App() {
     const nextCellIsAWall = nextCellValue === 0;
 
     if (nextCellIsAWall) return;
-    prevPlayerY = playerY;
     playerY++;
     camera.position.x += wallThickness;
+
+    mapDrawn = false;
   }
 
   const goLeft = () => {
@@ -144,9 +144,10 @@ export default function App() {
     const nextCellIsAWall = nextCellValue === 0;
 
     if (nextCellIsAWall) return;
-    prevPlayerX = playerX;
     playerX -= 1;
     camera.position.z += wallThickness;
+
+    mapDrawn = false;
   }
 
   const goRight = () => {
@@ -155,19 +156,25 @@ export default function App() {
     const nextCellIsAWall = nextCellValue === 0;
 
     if (nextCellIsAWall) return;
-    prevPlayerX = playerX;
     playerX+=1;
     camera.position.z -= wallThickness;
+
+    mapDrawn = false;
   }
 
   const sketch2D = (p) => {
     const unit = width * 0.04;
 
+    const drawPlayerPosition = () => {
+      p.stroke(255, 12, 20);
+      p.point(unit*(3+playerX), unit*(3+playerY));
+    }
+
     const drawMapIfNecessary = () => {
       if (map && !mapDrawn)
       {  
         p.background(mapBackground);
-        
+
         p.stroke(0);
         for (let j = 0; j < mapDimension; j++)
         {
@@ -183,18 +190,10 @@ export default function App() {
           }
         }
 
+        drawPlayerPosition();
+
         mapDrawn = true;
       }
-    }
-
-    const erasePreviousPlayerPosition = () => {
-      p.stroke(mapBackground);
-      p.point(unit*(3+prevPlayerX), unit*(3+prevPlayerY));
-    }
-
-    const drawNewPlayerPosition = () => {
-      p.stroke(255, 12, 20);
-      p.point(unit*(3+playerX), unit*(3+playerY));
     }
 
     p.setup = () => {
@@ -204,8 +203,6 @@ export default function App() {
 
     p.draw = () => {
       drawMapIfNecessary();
-      drawNewPlayerPosition();
-      erasePreviousPlayerPosition();
     }
   }
 
