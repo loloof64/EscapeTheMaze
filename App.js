@@ -49,8 +49,6 @@ export default function App() {
   }
 
   const buildMaze = () => {
-    resetScene();
-
     for (let j = 0; j < mapDimension; j++) {
       for (let i = 0; i < mapDimension; i++) {
         const cellValue = map[j][i];
@@ -86,6 +84,7 @@ export default function App() {
     height,
     scale: pixelRatio,
   }) => {
+
     gl = tempGl;
     scale = pixelRatio;
 
@@ -96,7 +95,15 @@ export default function App() {
     camera.position.x = InitialCameraX;
     camera.position.z = InitialCameraZ;
     
-    buildMap();
+    if (map) {
+      camera.position.x = playerY * wallThickness;
+      camera.position.z = -playerX * wallThickness;
+      mapDrawn = false;
+    }
+    else {
+      buildMap();
+      resetScene();
+    }
     buildMaze();
   };
 

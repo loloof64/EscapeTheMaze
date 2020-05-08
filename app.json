@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "escape-maze",
-    "slug": "escape-maze",
+    "name": "exit-maze",
+    "slug": "exit-maze",
     "platforms": [
       "ios",
       "android",

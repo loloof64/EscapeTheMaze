@@ -1,6 +1,6 @@
-# Escape maze
+# Exit maze
 
-Escape the maze
+Exit the maze
 
 ## Credits
 
