@@ -11,7 +11,7 @@ export default function App() {
   const wallThickness = 4;
   const wallLength = 4;
   let scene, camera, renderer, gl, scale;
-  let map, mapDrawn;
+  let map, mapDrawn = true;
   const mapBackground = 152;
   let playerX, playerY, prevPlayerX, prevPlayerY;
   const InitialCameraX = wallThickness; // we must initially place on row 1
@@ -19,6 +19,10 @@ export default function App() {
 
   const width = Dimensions.get('window').width;
   const height = Dimensions.get('window').height;
+
+  const resetScene = () => {
+    scene = new THREE.Scene();
+  }
 
   const buildMap = () => {
 
@@ -41,19 +45,21 @@ export default function App() {
     prevPlayerY = 1;
     playerX = 0;
     playerY = 1;
-    mapDrawn = false;
     buildMapEmptyArray();
     createFreeZonesForMap();
+    mapDrawn = false;
   }
 
-  const buildMazeForScene = (scene) => {
+  const buildMaze = () => {
+    resetScene();
+
     for (let j = 0; j < mapDimension; j++) {
       for (let i = 0; i < mapDimension; i++) {
         const cellValue = map[j][i];
         const isAWall = cellValue === 0;
 
         if (isAWall) {
-          let wall = createWallForScene(scene);
+          let wall = createWall();
           wall.position.x = wallThickness * j;
           wall.position.z = - wallThickness * i;
         }
@@ -61,7 +67,7 @@ export default function App() {
     }
   }
 
-  const createWallForScene = (scene) => {
+  const createWall = () => {
     const geometry = new THREE.BoxGeometry(wallThickness, 16, wallLength);
     const material = new THREE.MeshBasicMaterial({color: 0x559641});
 
@@ -86,14 +92,14 @@ export default function App() {
     scale = pixelRatio;
 
     configureRenderer({ width, height });
+    resetScene();
 
-    scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     camera.position.x = InitialCameraX;
     camera.position.z = InitialCameraZ;
     
     buildMap();
-    buildMazeForScene(scene);
+    buildMaze();
   };
 
   const onRender = () => { 
@@ -102,6 +108,9 @@ export default function App() {
 
   const onResize = ({width, height}) => {
     configureRenderer({ width, height });
+
+    buildMap();
+    buildMaze();
   }
 
   const goUp = () => {
@@ -141,7 +150,6 @@ export default function App() {
   }
 
   const goRight = () => {
-    if (!map) return;
     if (playerX === mapDimension - 1) return;
     const nextCellValue = map[playerY][playerX+1];
     const nextCellIsAWall = nextCellValue === 0;
