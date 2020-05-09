@@ -39,7 +39,9 @@ export default function App() {
     };
 
     const createFreeZonesForMap = () => {
-      for (let i = 0; i < mapDimension; i++) map[1][i] = 1;
+      for (let i = 0; i < mapDimension-1; i++) map[1][i] = 1;
+      for (let i = 0; i < mapDimension-2; i++) map[1+i][mapDimension-2] = 1;
+      for (let i = 0; i < mapDimension-2; i++) map[14][i] = 1;
     };
 
     playerX = 0;
