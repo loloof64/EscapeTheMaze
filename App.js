@@ -132,6 +132,7 @@ export default function App() {
     if (nextCellIsAWall) return;
     playerY--;
     camera3D.position.x -= wallThickness;
+    camera3D.rotation.y = Math.PI/2;
     updatePlayerPositionInMap();
   };
 
@@ -144,6 +145,7 @@ export default function App() {
     if (nextCellIsAWall) return;
     playerY++;
     camera3D.position.x += wallThickness;
+    camera3D.rotation.y = -Math.PI/2;
     updatePlayerPositionInMap();
   };
 
@@ -156,6 +158,7 @@ export default function App() {
     if (nextCellIsAWall) return;
     playerX -= 1;
     camera3D.position.z += wallThickness;
+    camera3D.rotation.y = Math.PI;
     updatePlayerPositionInMap();
   };
 
@@ -168,6 +171,7 @@ export default function App() {
     if (nextCellIsAWall) return;
     playerX += 1;
     camera3D.position.z -= wallThickness;
+    camera3D.rotation.y = 0;
     updatePlayerPositionInMap();
   };
 
